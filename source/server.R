@@ -9,10 +9,10 @@ data_path <- file.path("..", "data", "automobile.csv")
 raw.data <- read.csv(data_path, stringsAsFactors = TRUE) %>%
   mutate(
     # Categorical variables
-    nombre = as.factor(name),
-    origen = as.factor(origin),
-    modelo =  as.factor(model_year, levels = order(raw.data$model_year)),
-    cilindros = as.factor(cylinder, levels = order(raw.data$cylinders, decreasing = TRUE)),
+    nombre = factor(name),
+    origen = factor(origin),
+    modelo =  factor(model_year),
+    cilindros = factor(cylinders),
     
     # Numerical variables
     masa = as.numeric(weight),
@@ -20,6 +20,17 @@ raw.data <- read.csv(data_path, stringsAsFactors = TRUE) %>%
     HP = as.integer(horsepower),
     mpg = as.numeric(mpg),
     distancia = as.numeric(displacement),
+  ) %>%
+  select(
+    nombre,
+    origen,
+    modelo,
+    cilindros,
+    masa,
+    aceleracion,
+    HP,
+    mpg,
+    distancia
   )
 
 shinyServer(function(input, output) {
@@ -52,7 +63,7 @@ shinyServer(function(input, output) {
     print(pie_chart) # You can also return the plot directly instead of using print
   })
   
-  output$pie_text <- renderText({
+  output$foo_text <- renderText({
     text <- "
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
     Morbi eget scelerisque tortor, vel scelerisque arcu. 
