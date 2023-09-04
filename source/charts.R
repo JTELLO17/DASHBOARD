@@ -108,7 +108,7 @@ cat_table_render <- function(cat, color) {
   pl <- ggtexttable(x = tb, 
                     rows = rownames(tb), 
                     cols = colnames(tb),
-                    theme = ttheme('mOrange')) %>%
+                    theme = ttheme('mCyan')) %>%
     tbody_add_border()
   
   return(pl)

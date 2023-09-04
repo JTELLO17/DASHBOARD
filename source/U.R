@@ -17,42 +17,42 @@ shinyUI(
         plotOutput("cat_hist"),
         selectInput("hist_cat", "",
                     choices = c("modelo", "origen", "cilindros"),
-                    selected = "modelo")
+                    selected = "modelo"),
         selectInput("hist_color", "", 
                     choices = c("aceleracion", "masa"),
-                    selected = "aceleracion")
+                    selected = "aceleracion"),
         plotOutput ("cat_table"), 
         selectInput("cat_table", "",
                     choices = c("cilindros, origen"),
-                    selected = "cilindros")
+                    selected = "cilindros"),
         selectInput("color_table","",
                     choices = c("modelo, mpg"),
-                    selected = "modelo")
-        plotOutput("scatter_plot")
+                    selected = "modelo"),
+        plotOutput("scatter_plot"),
         selectInput("scatter_x", "",
                     choices = c("modelo"),
-                    selected = "modelo")
+                    selected = "modelo"),
         selectInput("scatter_y", "", 
                     choices = c("aceleracion, HP"),
-                    selected = "aceleracion")
+                    selected = "aceleracion"),
         selectInput("scatter_color","",
                     choices = c("mpg", "origen"),
-                    selected = "mpg")
+                    selected = "mpg"),
         selectInput("scatter_size","",
                     choices = c("origen","aceleracion"),
-                    selected = "origen")
+                    selected = "origen"),
         selectInput("scatter_alpha", "",
                     choices = c("mpg, modelo"),
-                    selected = "mpg")
-        plotOutput("box_plot")
+                    selected = "mpg"),
+        plotOutput("box_plot"),
         selectInput("box_x","",
-                    choices = c("modelo, cilindros")
-                    selected = "modelo")
+                    choices = c("modelo, cilindros"),
+                    selected = "modelo"),
         selectInput("box_y","",
-                    choices = c("aceleracion, weight")
-                    selected = "weight")
+                    choices = c("aceleracion, weight"),
+                    selected = "weight"),
         selectInput("box_fill","",
-                    choices = c("mpg", "origen")
+                    choices = c("mpg", "origen"),
                     selected = "mpg")
         )
       )

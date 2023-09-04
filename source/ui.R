@@ -1,58 +1,54 @@
-# ui.R
-
 library(shiny)
-library(ggplot2)
 
-
-# Define the path to the data file
-data_path <- file.path("..", "data", "automobile.csv")
-
-# Load data
-raw.data <- read.csv(data_path, stringsAsFactors = TRUE)
+source("./charts.R")
 
 shinyUI(
   fluidPage(
-    titlePanel("Automobile Data Analysis"),
+    titlePanel("Automoviles"),
     
-    # First Row
-    fluidRow(
+    fluidRow( # two buttons
       column(
-        4, 
-        plotOutput("pie_chart"), 
-        textOutput("pie_text"),
-        br(),
-        selectInput("hist_category", "Frecuencia de:",
-                    choices = c("model_year", "cylinders", "origin"), 
-                    selected = "origin"
-        ),
-        selectInput("hist_color", "color:",
-                    choices = c("model_year", "cylinders", "origin"), 
-                    selected = "origin"
-        ),
-        plotOutput("histogram_plot")
-        # selectInput("bar_category", "Frecuencia de:",
-        #             choices = c("model_year", "cylinders", "origin"), selected = "origin"),
-        # plotOutput("bar_chart")
-      ),
+        6,
+        plotOutput("pie_chart"),
+        plotOutput("summ_factor"),
+        plotOutput("summ_numeric"),
+        plotOutput ("cat_table"), 
+        selectInput("table_cat", "",
+                    choices = c("origen", "modelo", "cilindros"),
+                    selected = "origen"),
+        selectInput("table_color", "",
+                    choices = c("origen", "modelo", "cilindros"),
+                    selected = "origen")
+      ),# column
       column(
-        2, 
-      ),
-      column(
-        6, 
-        fluidRow(plotOutput("dispersion_plot")),
-        fluidRow(
-          selectInput("dispersion_x", "",
-                      choices = c("mpg", "horsepower", "weight", "displacement", "acceleration"),
-                      selected = "weight"),
-          selectInput("dispersion_y", "",
-                      choices = c("mpg", "horsepower", "weight", "displacement", "acceleration"),
-                      selected = "acceleration"),
-          selectInput("dispersion_color", "",
-                      choices = c("origin", "cylinder", "weight", "displacement", "acceleration"),
-                      selected = "weight")
-        )
-      ),      
-    ),
-  )
+        6,
+        plotOutput("scatter_plot"),
+        selectInput("scatter_x", "",
+                    choices = c("masa", "aceleracion", "mpg", "HP", "distancia"),
+                    selected = "masa"),
+        selectInput("scatter_y", "",
+                    choices = c("masa", "aceleracion", "mpg", "HP", "distancia"),
+                    selected = "masa"),
+        selectInput("scatter_color", "",
+                    choices = c("origen", "modelo", "cilindros"),
+                    selected = "origen"),
+        selectInput("scatter_size", "",
+                    choices = c("masa", "aceleracion", "mpg", "HP", "distancia"),
+                    selected = "masa"),
+        selectInput("scatter_alpha", "",
+                    choices = c("masa", "aceleracion", "mpg", "HP", "distancia"),
+                    selected = "masa"),
+        plotOutput("box_plot"),
+        selectInput("box_x","",
+                    choices = c("origen", "modelo", "cilindros"),
+                    selected = "origen"),
+        selectInput("box_y", "",
+                    choices = c("masa", "aceleracion", "mpg", "HP", "distancia"),
+                    selected = "masa"),
+        selectInput("box_fill", "",
+                    choices = c("origen", "modelo", "cilindros"),
+                    selected = "origen")
+      ),# column
+    ), # row
+  ) # fluidPage
 )
-
