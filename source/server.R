@@ -2,36 +2,6 @@ library(dplyr)
 library(ggplot2)
 library(ggpubr)
 
-# Define the path to the data file
-data_path <- file.path("..", "data", "automobile.csv")
-
-# Load data
-raw.data <- read.csv(data_path, stringsAsFactors = TRUE) %>%
-  mutate(
-    # Categorical variables
-    nombre = factor(name),
-    origen = factor(origin),
-    modelo =  factor(model_year),
-    cilindros = factor(cylinders),
-    
-    # Numerical variables
-    masa = as.numeric(weight),
-    aceleracion = as.numeric(acceleration),
-    HP = as.integer(horsepower),
-    mpg = as.numeric(mpg),
-    distancia = as.numeric(displacement),
-  ) %>%
-  select(
-    nombre,
-    origen,
-    modelo,
-    cilindros,
-    masa,
-    aceleracion,
-    HP,
-    mpg,
-    distancia
-  )
 
 shinyServer(function(input, output) {
   
