@@ -40,6 +40,32 @@ raw_data <- function() {
 }
 raw.data <- raw_data()
 
+pie_chart <- function() {
+  data <- raw.data %>%
+    group_by(origen) %>%
+    count() %>%
+    ungroup() %>%
+    mutate(freq = n/sum(n),
+           ymax = cumsum(freq),
+           ymin = c(0, head(ymax, n=-1))) %>%
+    arrange(desc(freq))
+  
+  data$procedencia <- factor(data %>% pull(origen),
+                             levels = data %>% pull(origen))
+  
+  pl <- ggplot(data = data,
+               mapping = aes(x = 0.7, y = freq, fill = procedencia)) +
+    geom_bar(stat = "identity", width = 1, color = "white") +
+    geom_text(mapping = aes(x = 0.8, 
+                            y = ymax - freq / 2, 
+                            label = paste0(round(freq * 100, 1), "%")), 
+              color = "black") +
+    coord_polar(theta = "y", start = 0) +
+    theme_void() +
+    labs(title = "Distribución según procedéncia")
+  
+  pl # You can also return the plot directly instead of using print
+}
 
 cat_hist <- function(cat, color, binsize = 30) {
   data <- raw.data %>%
@@ -55,47 +81,6 @@ cat_hist <- function(cat, color, binsize = 30) {
     alpha = 0.7,
     position = "stack"
   )
-  
-  return(pl)
-}
-
-scatter_plot <- function(x, y, color = 'origen', size = 'mpg', alpha = "HP") {
-  col1 <- as.name(x)
-  col2 <- as.name(y)
-  col3 <- as.name(color)
-  col4 <- as.name(size)
-  col5 <- as.name(alpha)
-  
-  data <- raw.data %>%
-    dplyr::select(!!col1, !!col2, !!col3, !!col4, !!col5)
-  
-  pl <- ggplot(data = data,
-               mapping = aes(x = !!col1, y = !!col2)) +
-    geom_point(mapping = aes(color = !!col3,
-                             size = !!col4,
-                             alpha = !!col5)) +
-    scale_alpha_continuous() +
-    theme_bw() +
-    theme(panel.grid = element_blank())
-  
-  return(pl)
-}
-
-box_plot <- function(x, y, color = 'origen', size = 'mpg', alpha = "HP") {
-  col1 <- as.name(x)
-  col2 <- as.name(y)
-  col3 <- as.name(color)
-  col4 <- as.name(size)
-  col5 <- as.name(alpha)
-  
-  data <- raw.data %>%
-    dplyr::select(!!col1, !!col2, !!col3, !!col4, !!col5)
-  
-  pl <- ggplot(data = data,
-               mapping = aes(x = !!col1, y = !!col2)) +
-    geom_boxplot(mapping = aes(fill = !!col3), color = "black") +
-    theme_bw() +
-    theme(panel.grid = element_blank())
   
   return(pl)
 }
@@ -129,6 +114,44 @@ cat_table_render <- function(cat, color) {
   return(pl)
 }
 
+scatter_plot <- function(x, y, color = 'origen', size = 'mpg', alpha = "HP") {
+  col1 <- as.name(x)
+  col2 <- as.name(y)
+  col3 <- as.name(color)
+  col4 <- as.name(size)
+  col5 <- as.name(alpha)
+  
+  data <- raw.data %>%
+    dplyr::select(!!col1, !!col2, !!col3, !!col4, !!col5)
+  
+  pl <- ggplot(data = data,
+               mapping = aes(x = !!col1, y = !!col2)) +
+    geom_point(mapping = aes(color = !!col3,
+                             size = !!col4,
+                             alpha = !!col5)) +
+    scale_alpha_continuous() +
+    theme_bw() +
+    theme(panel.grid = element_blank())
+  return(pl)
+}
+
+box_plot <- function(x, y, fill = 'origen') {
+  col1 <- as.name(x)
+  col2 <- as.name(y)
+  col3 <- as.name(fill)
+
+  data <- raw.data %>%
+    dplyr::select(!!col1, !!col2, !!col3)
+  
+  pl <- ggplot(data = data,
+               mapping = aes(x = !!col1, y = !!col2)) +
+    geom_boxplot(mapping = aes(fill = !!col3), color = "black") +
+    theme_bw() +
+    theme(panel.grid = element_blank())
+  
+  return(pl)
+}
+
 summary_table_render <- function(sel = is.numeric) {
   tb <- raw.data %>% 
     select_if(sel) %>% 
@@ -144,9 +167,11 @@ summary_table_render <- function(sel = is.numeric) {
 }
 
 
-cat_hist("modelo", "cilindros")
-cat_table("cilindros", "origen")
-cat_table_render("modelo", "cilindros")
-scatter_plot("modelo", "aceleracion", "origen")
-box_plot("modelo", "masa", "origen")
-summary_table_render(is.numeric)
+# Examples
+# cat_hist(cat = "modelo", color = "origen")
+# # cat_table(cat = "cilindros", color = "origen")
+# cat_table_render(cat = "cilindros", color = "origen")
+# scatter_plot(x = "masa", y = "aceleracion", color = "origen", size = "aceleracion", alpha = "aceleracion")
+# box_plot(x = "modelo", y = "masa", fill = "origen")
+# summary_table_render(is.factor)
+# pie_chart()
