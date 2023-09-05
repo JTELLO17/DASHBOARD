@@ -26,3 +26,4 @@ pie(table(automobile$origin), labels,
 
 
 barplot(automobile$model_year)
+
